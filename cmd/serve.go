@@ -4,12 +4,12 @@ import (
 	"os/signal"
 	"syscall"
 
-	"github.com/rs/zerolog/log"
 	"github.com/spf13/cobra"
 
 	"github.com/Tanq16/senkaimon/internal/audit"
 	"github.com/Tanq16/senkaimon/internal/server"
 	"github.com/Tanq16/senkaimon/internal/store"
+	u "github.com/Tanq16/senkaimon/utils"
 )
 
 var serveCmd = &cobra.Command{
@@ -19,34 +19,34 @@ var serveCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		cfg, err := store.LoadConfig()
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed to load config")
+			u.PrintFatal("Cannot load the config", err)
 		}
 
 		st, err := store.Open(cfg)
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed to load state")
+			u.PrintFatal("Cannot load the state files", err)
 		}
 
 		auditPath, err := store.Path(store.AuditFile)
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed to resolve the config directory")
+			u.PrintFatal("Cannot resolve the config directory", err)
 		}
 		auditLog, err := audit.Open(auditPath)
 		if err != nil {
-			log.Fatal().Err(err).Msg("failed to open the audit log")
+			u.PrintFatal("Cannot open the audit log", err)
 		}
 		defer auditLog.Close()
 
 		srv := server.New(cfg, st, auditLog)
 		if err := srv.Setup(); err != nil {
-			log.Fatal().Err(err).Msg("failed to set up the server")
+			u.PrintFatal("Cannot set up the server", err)
 		}
 
 		ctx, stop := signal.NotifyContext(cmd.Context(), syscall.SIGINT, syscall.SIGTERM)
 		defer stop()
 
 		if err := srv.Run(ctx); err != nil {
-			log.Fatal().Err(err).Msg("server error")
+			u.PrintFatal("Server error", err)
 		}
 	},
 }
