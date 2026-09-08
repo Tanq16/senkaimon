@@ -73,7 +73,7 @@ func (s *Server) Setup() error {
 	s.mux.HandleFunc("POST /api/login/totp", s.withOrigin(s.handleTOTPChallenge))
 	s.mux.HandleFunc("POST /api/logout", s.withOrigin(s.handleLogout))
 
-	s.mux.HandleFunc("GET /{$}", s.handleIndex)
+	s.mux.HandleFunc("GET /", s.handleIndex)
 
 	s.mux.HandleFunc("GET /api/account", s.withSession(s.handleAccount))
 	s.mux.HandleFunc("POST /api/account/password", s.withOrigin(s.withSession(s.handleAccountPassword)))
