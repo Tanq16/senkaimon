@@ -5,6 +5,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/rs/zerolog/log"
+
 	"github.com/Tanq16/senkaimon/internal/audit"
 	"github.com/Tanq16/senkaimon/internal/policy"
 	"github.com/Tanq16/senkaimon/internal/store"
@@ -236,6 +238,7 @@ func (s *Server) handleAudit(w http.ResponseWriter, r *http.Request) {
 	}
 	events, err := s.audit.Tail(limit)
 	if err != nil {
+		log.Error().Err(err).Msg("failed to read the audit log")
 		writeError(w, http.StatusInternalServerError, "could not read the audit log")
 		return
 	}
