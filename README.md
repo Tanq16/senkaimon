@@ -2,6 +2,7 @@
   <img src=".github/assets/logo.svg" alt="Senkaimon Logo" width="150">
   <h1>Senkaimon</h1>
 
+  <a href="https://github.com/Tanq16/senkaimon/actions/workflows/release.yaml"><img alt="Build Workflow" src="https://github.com/Tanq16/senkaimon/actions/workflows/release.yaml/badge.svg"></a>&nbsp;<a href="https://github.com/Tanq16/senkaimon/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Tanq16/senkaimon"></a><br><br>
   <a href="#features">Features</a> &bull; <a href="#install">Install</a> &bull; <a href="#usage">Usage</a> &bull; <a href="#caddy">Caddy</a> &bull; <a href="#notes">Notes</a>
 </div>
 
@@ -47,6 +48,13 @@ It exists so a home lab can be reachable from anywhere without every service gro
 
 ## Install
 
+Grab a binary from [releases](https://github.com/Tanq16/senkaimon/releases). Every push to `main` publishes `linux/amd64`, `linux/arm64`, `darwin/amd64`, and `darwin/arm64`. The edge runs `linux/arm64`.
+
+```bash
+curl -sfLo senkaimon https://github.com/Tanq16/senkaimon/releases/latest/download/senkaimon-linux-arm64
+chmod +x senkaimon
+```
+
 Building from source needs Go 1.27 or newer and `curl`, which the asset target uses to fetch the pinned frontend files.
 
 ```bash
@@ -54,8 +62,6 @@ git clone https://github.com/Tanq16/senkaimon.git
 cd senkaimon
 make build
 ```
-
-`make build-all` produces `linux/arm64`, `linux/amd64`, and `darwin/arm64` binaries. The release target is `linux/arm64`, which is what the edge runs.
 
 Nothing under `internal/server/static/css`, `js`, or `fonts` is committed. `make build` downloads it first, so a fresh clone compiles.
 

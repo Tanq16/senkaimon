@@ -1,4 +1,4 @@
-.PHONY: help assets verify-assets font fontawesome clean build build-for build-all version
+.PHONY: help assets verify-assets font clean build build-for build-all version
 
 # =============================================================================
 # Variables
@@ -97,6 +97,7 @@ build-all: assets verify-assets ## Build every platform binary
 	@$(MAKE) build-for GOOS=linux  GOARCH=arm64
 	@$(MAKE) build-for GOOS=linux  GOARCH=amd64
 	@$(MAKE) build-for GOOS=darwin GOARCH=arm64
+	@$(MAKE) build-for GOOS=darwin GOARCH=amd64
 
 # =============================================================================
 # Version
