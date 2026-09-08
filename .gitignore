@@ -1,0 +1,40 @@
+# Binaries
+senkaimon
+senkaimon-*
+bin/
+dist/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Test
+*.test
+coverage.out
+coverage.html
+
+# Downloaded frontend assets (make assets)
+internal/server/static/css/
+internal/server/static/js/
+internal/server/static/fonts/
+internal/server/static/icons/
+
+# Agent instructions
+.agents/
+.claude/
+AGENTS.md
+CLAUDE.md
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
