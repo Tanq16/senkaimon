@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in &middot; Senkaimon</title>
+    <link rel="icon" type="image/svg+xml" href="/static/icons/logo.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
+    <link rel="stylesheet" href="/static/css/inter.css">
+    <link rel="stylesheet" href="/static/css/google-sans.css">
+    <link rel="stylesheet" href="/static/css/jetbrains-mono.css">
+
+    <script src="/static/js/lucide.min.js"></script>
+    <script src="/static/js/tailwind.js"></script>
+    <style>
+      /* Catppuccin Mocha */
+      :root {
+        --ctp-rosewater: #f5e0dc; --ctp-flamingo: #f2cdcd; --ctp-pink: #f5c2e7;
+        --ctp-mauve: #cba6f7;     --ctp-red: #f38ba8;      --ctp-maroon: #eba0ac;
+        --ctp-peach: #fab387;     --ctp-yellow: #f9e2af;   --ctp-green: #a6e3a1;
+        --ctp-teal: #94e2d5;      --ctp-sky: #89dceb;      --ctp-sapphire: #74c7ec;
+        --ctp-blue: #89b4fa;      --ctp-lavender: #b4befe; --ctp-text: #cdd6f4;
+        --ctp-subtext1: #bac2de;  --ctp-subtext0: #a6adc8; --ctp-overlay2: #9399b2;
+        --ctp-overlay1: #7f849c;  --ctp-overlay0: #6c7086; --ctp-surface2: #585b70;
+        --ctp-surface1: #45475a;  --ctp-surface0: #313244; --ctp-base: #1e1e2e;
+        --ctp-mantle: #181825;    --ctp-crust: #11111b;
+      }
+      ::selection { background: var(--ctp-surface1); color: var(--ctp-text); }
+      ::-webkit-scrollbar { width: 10px; height: 10px; }
+      ::-webkit-scrollbar-track { background: transparent; }
+      ::-webkit-scrollbar-thumb { background: var(--ctp-surface0); border-radius: 9999px; }
+      ::-webkit-scrollbar-thumb:hover { background: var(--ctp-surface1); }
+      input:-webkit-autofill, input:-webkit-autofill:focus {
+        -webkit-text-fill-color: var(--ctp-text);
+        -webkit-box-shadow: 0 0 0 1000px var(--ctp-surface0) inset;
+      }
+    </style>
+    <style type="text/tailwindcss">
+      @theme {
+        --color-rosewater: var(--ctp-rosewater); --color-flamingo: var(--ctp-flamingo);
+        --color-pink: var(--ctp-pink);           --color-mauve: var(--ctp-mauve);
+        --color-red: var(--ctp-red);             --color-maroon: var(--ctp-maroon);
+        --color-peach: var(--ctp-peach);         --color-yellow: var(--ctp-yellow);
+        --color-green: var(--ctp-green);         --color-teal: var(--ctp-teal);
+        --color-sky: var(--ctp-sky);             --color-sapphire: var(--ctp-sapphire);
+        --color-blue: var(--ctp-blue);           --color-lavender: var(--ctp-lavender);
+        --color-text: var(--ctp-text);           --color-subtext1: var(--ctp-subtext1);
+        --color-subtext0: var(--ctp-subtext0);   --color-overlay2: var(--ctp-overlay2);
+        --color-overlay1: var(--ctp-overlay1);   --color-overlay0: var(--ctp-overlay0);
+        --color-surface2: var(--ctp-surface2);   --color-surface1: var(--ctp-surface1);
+        --color-surface0: var(--ctp-surface0);   --color-base: var(--ctp-base);
+        --color-mantle: var(--ctp-mantle);       --color-crust: var(--ctp-crust);
+
+        --font-sans: 'Inter', sans-serif;
+        --font-display: 'Google Sans', sans-serif;
+        --font-mono: 'JetBrains Mono', monospace;
+      }
+    </style>
+</head>
+<body class="bg-crust text-subtext0 min-h-screen font-sans antialiased">
+    <main class="min-h-screen flex items-center justify-center px-4 py-10">
+      <div class="w-full max-w-sm">
+
+        <div class="flex flex-col items-center gap-3 mb-8">
+          <img src="/static/icons/logo.svg" alt="" class="w-24 h-24">
+          <h1 class="font-display text-2xl text-text tracking-tight">Senkaimon</h1>
+          <p id="subtitle" class="text-sm text-overlay1">Sign in to continue</p>
+        </div>
+
+        <div class="bg-mantle rounded-2xl p-6 shadow-2xl shadow-crust/60">
+
+          <form id="stage-credentials" class="flex flex-col gap-4">
+            <label class="flex flex-col gap-2">
+              <span class="text-xs font-medium uppercase tracking-wider text-overlay1">Username</span>
+              <input id="username" name="username" autocomplete="username" autofocus required
+                     class="bg-surface0 rounded-xl px-3.5 py-2.5 text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
+            </label>
+            <label class="flex flex-col gap-2">
+              <span class="text-xs font-medium uppercase tracking-wider text-overlay1">Password</span>
+              <input id="password" name="password" type="password" autocomplete="current-password" required
+                     class="bg-surface0 rounded-xl px-3.5 py-2.5 text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
+            </label>
+            <button type="submit" class="mt-1 flex items-center justify-center gap-2 rounded-xl bg-mauve px-4 py-2.5 font-medium text-crust hover:bg-lavender disabled:opacity-50 transition">
+              <span>Sign in</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <form id="stage-totp" class="hidden flex-col gap-4">
+            <p class="text-sm text-subtext0">Enter the six digit code from your authenticator, or one recovery code.</p>
+            <input id="totp-code" inputmode="text" autocomplete="one-time-code" placeholder="000000"
+                   class="bg-surface0 rounded-xl px-3.5 py-3 text-center font-mono text-xl tracking-[0.3em] text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
+            <button type="submit" class="flex items-center justify-center gap-2 rounded-xl bg-mauve px-4 py-2.5 font-medium text-crust hover:bg-lavender disabled:opacity-50 transition">
+              <span>Verify</span>
+              <i data-lucide="shield-check" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <form id="stage-enrol" class="hidden flex-col gap-4">
+            <p class="text-sm text-subtext0">Add this secret to your authenticator, then confirm with the code it shows.</p>
+            <div class="rounded-xl bg-base p-3 flex flex-col gap-2">
+              <span class="text-xs font-medium uppercase tracking-wider text-overlay1">Secret</span>
+              <code id="enrol-secret" class="font-mono text-sm text-text break-words leading-relaxed"></code>
+            </div>
+            <details class="rounded-xl bg-base p-3">
+              <summary class="cursor-pointer text-xs font-medium uppercase tracking-wider text-overlay1 select-none">Provisioning URI</summary>
+              <code id="enrol-uri" class="mt-2 block font-mono text-xs text-subtext0 break-all leading-relaxed"></code>
+            </details>
+            <input id="enrol-code" inputmode="numeric" autocomplete="one-time-code" placeholder="000000"
+                   class="bg-surface0 rounded-xl px-3.5 py-3 text-center font-mono text-xl tracking-[0.3em] text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
+            <button type="submit" class="flex items-center justify-center gap-2 rounded-xl bg-mauve px-4 py-2.5 font-medium text-crust hover:bg-lavender disabled:opacity-50 transition">
+              <span>Confirm</span>
+              <i data-lucide="check" class="w-4 h-4"></i>
+            </button>
+          </form>
+
+          <div id="stage-recovery" class="hidden flex-col gap-4">
+            <div class="flex items-start gap-2.5 rounded-xl bg-yellow/10 p-3">
+              <i data-lucide="triangle-alert" class="w-4 h-4 mt-0.5 shrink-0 text-yellow"></i>
+              <p class="text-sm text-yellow/90">These ten codes are shown once. Each one works once, in place of your authenticator.</p>
+            </div>
+            <div id="recovery-codes" class="flex flex-col gap-1 rounded-xl bg-base p-3 font-mono text-xs text-text"></div>
+            <button id="recovery-copy" type="button" class="flex items-center justify-center gap-2 rounded-xl bg-surface0 px-4 py-2.5 text-sm text-subtext0 hover:bg-surface1 hover:text-text transition">
+              <i data-lucide="copy" class="w-4 h-4"></i>
+              <span>Copy all</span>
+            </button>
+            <label class="flex items-center gap-2.5 text-sm text-subtext0 cursor-pointer select-none">
+              <input id="recovery-ack" type="checkbox" class="w-4 h-4 accent-mauve">
+              <span>I have saved these codes somewhere safe</span>
+            </label>
+            <button id="recovery-continue" type="button" disabled
+                    class="flex items-center justify-center gap-2 rounded-xl bg-mauve px-4 py-2.5 font-medium text-crust hover:bg-lavender disabled:opacity-40 disabled:hover:bg-mauve transition">
+              <span>Continue</span>
+              <i data-lucide="arrow-right" class="w-4 h-4"></i>
+            </button>
+          </div>
+
+          <p id="error" class="hidden mt-4 flex items-start gap-2 rounded-xl bg-red/10 p-3 text-sm text-red"></p>
+        </div>
+
+        <p class="mt-6 text-center text-xs text-overlay0">Access is decided by policy, not by having an account.</p>
+      </div>
+    </main>
+    <script>
+      const rd = new URLSearchParams(location.search).get('rd') || '';
+      const stages = ['credentials', 'totp', 'enrol', 'recovery'];
+      const el = (id) => document.getElementById(id);
+      const errorBox = el('error');
+
+      let recoveryRedirect = '';
+
+      function show(name, subtitle) {
+        for (const s of stages) {
+          const node = el('stage-' + s);
+          node.classList.toggle('hidden', s !== name);
+          node.classList.toggle('flex', s === name);
+        }
+        el('subtitle').textContent = subtitle;
+        errorBox.classList.add('hidden');
+        lucide.createIcons();
+      }
+
+      function fail(message) {
+        errorBox.textContent = message;
+        errorBox.classList.remove('hidden');
+      }
+
+      async function post(path, body) {
+        const res = await fetch(path, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => ({}));
+        if (!res.ok) throw new Error(data.error || 'Something went wrong');
+        return data;
+      }
+
+      function land(target) {
+        window.location.href = target || '/';
+      }
+
+      async function beginEnrol() {
+        const res = await fetch('/api/login/enrol');
+        const data = await res.json();
+        if (!res.ok) throw new Error(data.error || 'Enrolment could not start');
+        el('enrol-secret').textContent = data.secret.replace(/(.{4})/g, '$1 ').trim();
+        el('enrol-uri').textContent = data.uri;
+        show('enrol', 'Set up your authenticator');
+      }
+
+      function submitting(form, busy) {
+        const button = form.querySelector('button[type=submit]');
+        if (button) button.disabled = busy;
+      }
+
+      el('stage-credentials').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitting(e.target, true);
+        try {
+          const data = await post('/api/login', { username: el('username').value, password: el('password').value, rd });
+          el('password').value = '';
+          if (data.next === 'done') return land(data.redirect);
+          if (data.next === 'enrol') return await beginEnrol();
+          show('totp', 'One more step');
+          el('totp-code').focus();
+        } catch (err) {
+          fail(err.message);
+        } finally {
+          submitting(e.target, false);
+        }
+      });
+
+      el('stage-totp').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitting(e.target, true);
+        try {
+          const data = await post('/api/login/totp', { code: el('totp-code').value.trim(), rd });
+          land(data.redirect);
+        } catch (err) {
+          el('totp-code').value = '';
+          fail(err.message);
+        } finally {
+          submitting(e.target, false);
+        }
+      });
+
+      el('stage-enrol').addEventListener('submit', async (e) => {
+        e.preventDefault();
+        submitting(e.target, true);
+        try {
+          const data = await post('/api/login/enrol', { code: el('enrol-code').value.trim(), rd });
+          recoveryRedirect = data.redirect;
+          el('recovery-codes').innerHTML = '';
+          for (const code of data.recovery_codes) {
+            const node = document.createElement('span');
+            node.className = 'rounded-lg bg-surface0 px-2.5 py-1.5 text-center tracking-wider';
+            node.textContent = code;
+            el('recovery-codes').appendChild(node);
+          }
+          show('recovery', 'Save your recovery codes');
+        } catch (err) {
+          el('enrol-code').value = '';
+          fail(err.message);
+        } finally {
+          submitting(e.target, false);
+        }
+      });
+
+      el('recovery-copy').addEventListener('click', async () => {
+        const codes = [...el('recovery-codes').children].map((n) => n.textContent).join('\n');
+        await navigator.clipboard.writeText(codes);
+        el('recovery-copy').querySelector('span').textContent = 'Copied';
+      });
+
+      el('recovery-ack').addEventListener('change', (e) => {
+        el('recovery-continue').disabled = !e.target.checked;
+      });
+
+      el('recovery-continue').addEventListener('click', () => land(recoveryRedirect));
+
+      lucide.createIcons();
+    </script>
+</body>
+</html>

@@ -17,7 +17,7 @@ coverage.html
 internal/server/static/css/
 internal/server/static/js/
 internal/server/static/fonts/
-internal/server/static/icons/
+internal/server/static/.assets-stamp
 
 # Agent instructions
 .agents/
