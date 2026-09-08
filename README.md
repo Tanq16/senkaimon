@@ -3,7 +3,7 @@
   <h1>Senkaimon</h1>
 
   <a href="https://github.com/Tanq16/senkaimon/actions/workflows/release.yaml"><img alt="Build Workflow" src="https://github.com/Tanq16/senkaimon/actions/workflows/release.yaml/badge.svg"></a>&nbsp;<a href="https://github.com/Tanq16/senkaimon/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/Tanq16/senkaimon"></a><br><br>
-  <a href="#features">Features</a> &bull; <a href="#install">Install</a> &bull; <a href="#usage">Usage</a> &bull; <a href="#caddy">Caddy</a> &bull; <a href="#notes">Notes</a>
+  <a href="#features">Features</a> &bull; <a href="#install">Install</a> &bull; <a href="#usage">Usage</a> &bull; <a href="#notes">Notes</a>
 </div>
 
 ---
@@ -98,7 +98,7 @@ Loads the config, loads every state file into memory, and binds. A missing confi
 
 ### Configuration
 
-`config.yaml` is written by `setup` and hand-editable afterwards. Every key is required; there are no fallbacks.
+`config.yaml` is written by `setup` and hand-editable afterwards. An omitted key falls back to the default below, and `identity.idp_url` and `identity.cookie_domain` have no default so they must be present.
 
 | Key | Default | Description |
 |---|---|---|
@@ -129,54 +129,13 @@ curl -H "Authorization: Bearer senkaimon_k7m2q9xb_..." https://kairo.etherios.wo
 
 A token is an identity like any other, so it reaches a host by being named as a subject in a policy. A token is never an admin.
 
-## Caddy
-
-**Caddy 2.11.2 or newer is required.** Versions 2.10.0 through 2.11.1 carry GHSA-7r4p-vjf4-gxv4, where `copy_headers` did not unconditionally delete the destination header first, so a client could send its own `Senkaimon-User` and have it reach the backend.
-
-```caddyfile
-# The IDP itself. No forward_auth here, or logging in is impossible.
-idp.etherios.work {
-	reverse_proxy 127.0.0.1:4180
-}
-
-(gated) {
-	forward_auth 127.0.0.1:4180 {
-		uri /verify
-		copy_headers Senkaimon-User Senkaimon-Kind Senkaimon-Token-Id
-	}
-	request_header -Authorization
-}
-
-kairo.etherios.work {
-	import gated
-	reverse_proxy 192.168.0.11:8081
-}
-```
-
-`request_header -Authorization` stops a Senkaimon token reaching an application that has no business seeing it. Do not add a manual strip for the three identity headers; the route `copy_headers` generates already deletes them, and `request_header` runs afterwards, so a strip would delete the identity Senkaimon just set.
-
-Do not set `trusted_proxies` on the edge Caddy. Its default of trusting nobody is what makes `X-Forwarded-For` the real client address, which the rate limiter keys on.
-
-Nothing routes `/verify` publicly. It is reachable only as the loopback subrequest.
-
-What Senkaimon answers, and what Caddy does with it:
-
-| Response | Caddy |
-|---|---|
-| `204` | copies the identity headers onto the request and continues upstream |
-| `401` | relays it to the client, with `WWW-Authenticate` when a bearer token was presented |
-| `403` | relays it, which is what a valid credential failing policy gets |
-| `302` | relays it, so a browser lands on the login page |
-
 ## Notes
 
+- **The edge is Caddy 2.11.2 or newer.** Senkaimon answers `/verify` on loopback for `forward_auth`, and nothing routes that path publicly. Versions 2.10.0 through 2.11.1 carry GHSA-7r4p-vjf4-gxv4, where a client could send its own `Senkaimon-User` and have it reach the backend. The working Caddyfile is in [docs/caddy.md](docs/caddy.md).
 - **Deployment is a native binary under systemd.** `/opt/senkaimon/versions/<version>/senkaimon` with `/opt/senkaimon/current` symlinked at it. `ProtectHome=yes` must not be set, because the config directory lives under the home directory, and `ReadWritePaths=` covers it instead.
 - **A WebSocket is checked once, at the upgrade.** The tunnel that follows is never re-verified, so revoking a session does not close an open socket. Restart the service behind it when that matters.
 - **The audit log is unbounded.** No rotation and no size cap in v1.
 - **A redirect target must sit inside the cookie domain.** A session cookie set on `.etherios.work` could never reach another domain anyway, and the constraint is what stops a policy of `allow *` turning the login page into an open redirect.
 - **Locking is per username, so a known account can be locked out deliberately** by failing five times. That is the accepted trade against unlimited guessing at a publicly reachable form.
-- **The home side of the tunnel enforces nothing.** A LAN client can send a forged `Senkaimon-User` straight to the home Caddy. No application in this lab reads that header, and any application that starts to must not be reachable without the same strip.
+- **The home side of the tunnel enforces nothing.** A LAN client can send a forged `Senkaimon-User` straight to the home Caddy. No application in this lab reads that header, and any application that starts to must sit behind the edge, where `copy_headers` deletes the client's version before setting its own.
 
-## License
-
-MIT.
