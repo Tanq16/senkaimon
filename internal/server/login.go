@@ -61,11 +61,13 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	case user.State == store.StatePending:
 		secret, err := totp.NewSecret()
 		if err != nil {
+			log.Error().Err(err).Str("subject", user.Username).Msg("failed to generate a totp secret")
 			writeError(w, http.StatusInternalServerError, "could not start enrolment")
 			return
 		}
 		value, err := s.store.PutPending(&store.Pending{Subject: user.Username, Stage: store.StageEnrol, TOTPSecret: secret})
 		if err != nil {
+			log.Error().Err(err).Str("subject", user.Username).Msg("failed to store the pending enrolment")
 			writeError(w, http.StatusInternalServerError, "could not start enrolment")
 			return
 		}
@@ -75,6 +77,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 	case user.TOTPRequired:
 		value, err := s.store.PutPending(&store.Pending{Subject: user.Username, Stage: store.StageTOTP})
 		if err != nil {
+			log.Error().Err(err).Str("subject", user.Username).Msg("failed to store the pending second factor")
 			writeError(w, http.StatusInternalServerError, "could not start the second factor")
 			return
 		}
@@ -89,6 +92,7 @@ func (s *Server) handleLogin(w http.ResponseWriter, r *http.Request) {
 func (s *Server) finish(w http.ResponseWriter, r *http.Request, username, rd, ip string) {
 	value, err := s.store.MintSession(username)
 	if err != nil {
+		log.Error().Err(err).Str("subject", username).Msg("failed to mint a session")
 		writeError(w, http.StatusInternalServerError, "could not create a session")
 		return
 	}
@@ -156,6 +160,7 @@ func (s *Server) handleEnrolFinish(w http.ResponseWriter, r *http.Request) {
 
 	codes, err := s.store.EnrolTOTP(p.Subject, p.TOTPSecret, step)
 	if err != nil {
+		log.Error().Err(err).Str("subject", p.Subject).Msg("failed to complete totp enrolment")
 		writeError(w, http.StatusInternalServerError, "could not complete enrolment")
 		return
 	}
@@ -163,6 +168,7 @@ func (s *Server) handleEnrolFinish(w http.ResponseWriter, r *http.Request) {
 
 	value, err := s.store.MintSession(p.Subject)
 	if err != nil {
+		log.Error().Err(err).Str("subject", p.Subject).Msg("failed to mint a session")
 		writeError(w, http.StatusInternalServerError, "could not create a session")
 		return
 	}

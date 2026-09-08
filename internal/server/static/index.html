@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senkaimon</title>
+    <link rel="icon" type="image/x-icon" href="/static/icons/favicon.ico">
     <link rel="icon" type="image/svg+xml" href="/static/icons/logo.svg">
     <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon.png">
     <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
@@ -69,9 +70,9 @@
           </div>
 
           <div class="flex items-center gap-2">
-            <span id="whoami" class="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-mantle px-3 py-1.5 text-sm text-subtext0"></span>
+            <span id="whoami" class="hidden sm:inline-flex items-center gap-1.5 rounded-full bg-surface0 px-3 py-1.5 text-sm text-subtext0"></span>
             <button id="logout" title="Sign out"
-                    class="flex items-center justify-center w-9 h-9 rounded-full bg-mantle text-overlay1 hover:bg-surface0 hover:text-red transition">
+                    class="flex items-center justify-center w-9 h-9 rounded-full bg-surface0 text-overlay1 hover:bg-surface1 hover:text-red transition">
               <i data-lucide="log-out" class="w-4 h-4"></i>
             </button>
           </div>
@@ -140,11 +141,11 @@
             <p class="text-sm text-overlay1">Newest first.</p>
           </div>
           <div class="flex items-center gap-2">
-            <div class="relative"><select id="audit-event" class="w-full rounded-full bg-mantle pl-3.5 pr-9 py-2 text-sm text-subtext0 outline-none focus:ring-2 focus:ring-mauve/60 transition appearance-none">
+            <div class="relative"><select id="audit-event" class="w-full rounded-full bg-surface0 pl-3.5 pr-9 py-2 text-sm text-subtext0 outline-none focus:ring-2 focus:ring-mauve/60 transition appearance-none">
               <option value="">All events</option>
             </select><i data-lucide="chevron-down" class="pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-overlay1"></i></div>
             <input id="audit-subject" placeholder="Subject"
-                   class="w-32 rounded-full bg-mantle px-3.5 py-2 text-sm text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
+                   class="w-32 rounded-full bg-surface0 px-3.5 py-2 text-sm text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
           </div>
         </div>
         <div id="audit-table" class="bg-mantle rounded-2xl overflow-hidden"></div>
