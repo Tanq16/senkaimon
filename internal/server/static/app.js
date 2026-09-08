@@ -167,7 +167,7 @@ function table(headers, rows, empty) {
   const body = rows.map((cells) => `<tr class="hover:bg-surface0/40 transition">${cells.join('')}</tr>`).join('');
   return `<div class="overflow-x-auto"><table class="w-full text-sm">
     <thead class="bg-crust/40"><tr>${head}</tr></thead>
-    <tbody class="divide-y divide-crust/60">${body}</tbody>
+    <tbody class="divide-y divide-surface1">${body}</tbody>
   </table></div>`;
 }
 
@@ -179,7 +179,7 @@ function renderNav() {
   const admin = state.account?.admin;
   el('nav').innerHTML = VIEWS.filter((v) => admin || !v.admin).map((v) => `
     <button data-view="${v.id}" class="shrink-0 flex items-center gap-2 rounded-full px-4 py-2 text-sm transition ${
-      state.view === v.id ? 'bg-mantle text-text' : 'text-overlay1 hover:text-subtext0'
+      state.view === v.id ? 'bg-surface0 text-text' : 'text-overlay1 hover:text-subtext0'
     }">
       <i data-lucide="${v.icon}" class="w-4 h-4 pointer-events-none"></i>
       <span class="pointer-events-none">${v.label}</span>
