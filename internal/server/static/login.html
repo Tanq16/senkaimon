@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign in &middot; Senkaimon</title>
-    <link rel="icon" type="image/svg+xml" href="/static/icons/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="/static/icons/logo.svg">
+    <link rel="icon" type="image/png" sizes="32x32" href="/static/icons/favicon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/static/icons/apple-touch-icon.png">
     <link rel="stylesheet" href="/static/css/inter.css">
     <link rel="stylesheet" href="/static/css/google-sans.css">
     <link rel="stylesheet" href="/static/css/jetbrains-mono.css">
@@ -61,9 +63,7 @@
       <div class="w-full max-w-sm">
 
         <div class="flex flex-col items-center gap-3 mb-8">
-          <div class="w-12 h-12 rounded-2xl bg-mantle flex items-center justify-center text-mauve">
-            <i data-lucide="door-closed-locked" class="w-6 h-6"></i>
-          </div>
+          <img src="/static/icons/logo.svg" alt="" class="w-24 h-24">
           <h1 class="font-display text-2xl text-text tracking-tight">Senkaimon</h1>
           <p id="subtitle" class="text-sm text-overlay1">Sign in to continue</p>
         </div>
@@ -110,7 +110,7 @@
             <input id="enrol-code" inputmode="numeric" autocomplete="one-time-code" placeholder="000000"
                    class="bg-surface0 rounded-xl px-3.5 py-3 text-center font-mono text-xl tracking-[0.3em] text-text placeholder:text-overlay0 outline-none focus:ring-2 focus:ring-mauve/60 transition">
             <button type="submit" class="flex items-center justify-center gap-2 rounded-xl bg-mauve px-4 py-2.5 font-medium text-crust hover:bg-lavender disabled:opacity-50 transition">
-              <span>Confirm and enrol</span>
+              <span>Confirm</span>
               <i data-lucide="check" class="w-4 h-4"></i>
             </button>
           </form>
